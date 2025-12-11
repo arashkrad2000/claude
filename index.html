@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>چت با Claude Opus 4.5 - رایگان</title>
+    <script src="https://js.puter.com/v2/"></script>
+    <style>
+        body { font-family: Tahoma, sans-serif; background: #0f0f1a; color: #eee; padding: 20px; }
+        textarea { width: 100%; height: 120px; background: #1a1a2e; color: #fff; border: 1px solid #444; border-radius: 10px; padding: 15px; font-size: 16px; }
+        button { background: #00d4ff; color: black; padding: 15px 30px; font-size: 18px; border: none; border-radius: 10px; cursor: pointer; margin-top: 10px; }
+        button:hover { background: #00ffaa; }
+        #answer { margin-top: 20px; padding: 20px; background: #16213e; border-radius: 10px; line-height: 1.8; white-space: pre-wrap; }
+        h1 { color: #00d4ff; text-align: center; }
+    </style>
+</head>
+<body>
+    <h1>چت اختصاصی با Claude Opus 4.5 (رایگان و بدون محدودیت)</h1>
+    <textarea id="question" placeholder="سوالت چیه؟ مثلاً: یه EA حرفه‌ای فارکس با ماشین لرنینگ بنویس"></textarea>
+    <br><br>
+    <button onclick="ask()">بفرست و جواب بگیر</button>
+    <div id="answer">جواب اینجا ظاهر می‌شه...</div>
+
+    <script>
+        async function ask() {
+            const question = document.getElementById("question").value;
+            const answerDiv = document.getElementById("answer");
+            if (!question.trim()) return;
+            
+            answerDiv.innerHTML = "در حال فکر کردن با Claude Opus 4.5...";
+
+            try {
+                const response = await puter.ai.chat(question, {
+                    model: "claude-opus-4-5-20251101"
+                });
+                answerDiv.innerHTML = response;
+            } catch (e) {
+                answerDiv.innerHTML = "خطا: " + e.message + "<br>احتمالاً باید با حساب Puter.com لاگین کنی (یه پنجره باز می‌شه)";
+            }
+        }
+    </script>
+</body>
+</html>
