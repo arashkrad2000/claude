@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>چت با Claude Opus 4.5</title>
+    <script src="https://js.puter.com/v2/"></script>
+    <style>
+        body {font-family:Tahoma;background:#0f0f1a;color:#eee;padding:20px;}
+        textarea, #answer {width:100%;background:#1a1a2e;color:#fff;border-radius:10px;padding:15px;font-size:16px;margin:10px 0;}
+        button {background:#00d4ff;color:black;padding:15px 30px;font-size:18px;border:none;border-radius:10px;cursor:pointer;}
+        button:hover {background:#00ffaa;}
+        h1 {color:#00d4ff;text-align:center;}
+    </style>
+</head>
+<body>
+    <h1>چت اختصاصی با Claude Opus 4.5</h1>
+    <textarea id="question" placeholder="سوالت چیه؟"></textarea><br>
+    <button onclick="ask()">بفرست</button>
+    <div id="answer">جواب اینجا میاد...</div>
+
+    <script>
+        async function ask() {
+            const q = document.getElementById("question").value.trim();
+            const div = document.getElementById("answer");
+            if (!q) return;
+            
+            div.innerHTML = "در حال فکر کردن با Claude Opus 4.5...";
+
+            try {
+                const resp = await puter.ai.chat(q, {
+                    model: "claude-opus-4-5-20251101"
+                });
+
+                // این ۳ خط مهم‌ترین قسمت هستن — فقط متن واقعی رو می‌گیره
+                let text = "";
+                if (typeof resp === "string") text = resp;
+                else if (resp && resp.content && Array.isArray(resp.content)) {
+                    text = resp.content.find(c => c.type === "text")?.text || JSON.stringify(resp, null, 2);
+                } else if (resp && resp.message) {
+                    text = resp.message;
+                } else {
+                    text = JSON.stringify(resp, null, 2);
+                }
+
+                div.innerHTML = text || "جوابی دریافت نشد";
+            } catch (e) {
+                div.innerHTML = `<span style="color:red">خطا: ${e.message}</span>`;
+            }
+        }
+    </script>
+</body>
+</html>
